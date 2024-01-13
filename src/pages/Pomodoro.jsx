@@ -17,10 +17,16 @@ function Pomodoro() {
       const intervalId = setInterval(() => {
         setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
       }, 1000);
-    });
+
+      return () => clearInterval(intervalId);
+    }, []);
   };
 
-  return <div></div>;
+  return;
+  <div>
+    <h1>Countdown Timer</h1>
+    <p>{formatTime(time)}</p>
+  </div>;
 }
 
 export default Pomodoro;
