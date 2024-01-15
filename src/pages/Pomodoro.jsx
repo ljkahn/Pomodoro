@@ -17,8 +17,19 @@ function Pomodoro() {
     setIsActive(true);
   };
 
+  const stopTimer = () => {
+    setIsActive(false);
+  };
+
+  const resetTimer = () => {
+    setIsActive(false);
+    setIsBreak(false);
+    setTime(25 * 60);
+  };
+
   useEffect(() => {
     let intervalId;
+
     if (isActive) {
       intervalId = setInterval(() => {
         setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
@@ -28,12 +39,15 @@ function Pomodoro() {
     if (time === 0) {
       setIsActive(false);
       if (!isBreak) {
+        // If it's the end of the work session, start a 5-minute break
         setTime(5 * 60);
       } else {
+        // If it's the end of the break, start a new 25-minute work session
         setTime(25 * 60);
       }
       setIsBreak(!isBreak);
     }
+
     return () => {
       clearInterval(intervalId);
     };
@@ -41,10 +55,16 @@ function Pomodoro() {
 
   return (
     <div>
-      <h1>Countdown Timer</h1>
+      <h1>Pomodoro Timer</h1>
       <p>{formatTime(time)}</p>
       <button onClick={startTimer} disabled={isActive}>
         Start Timer
+      </button>
+      <button onClick={stopTimer} disabled={!isActive}>
+        Stop Timer
+      </button>
+      <button onClick={resetTimer} disabled={isActive}>
+        Reset Timer
       </button>
     </div>
   );
