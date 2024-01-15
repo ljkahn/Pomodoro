@@ -107,6 +107,14 @@ function Pomodoro() {
                   </Button>
                 </div>
 
+                {/* <div>
+                  <button onClick={() => adjustTime(300)}>⬆️</button>
+                  <button onClick={() => adjustTime(-300)}>⬇️</button>
+                </div>
+                <div>
+                  <button onClick={() => adjustBreakTime(300)}>⬆️</button>
+                  <button onClick={() => adjustBreakTime(-300)}>⬇️</button>
+                </div> */}
                 <div>
                   <Button variant="dark" onClick={increaseBreak}>
                     Increase Break Time
@@ -114,7 +122,6 @@ function Pomodoro() {
                   <Button variant="dark" onClick={decreaseBreak}>
                     Decrease Break Time
                   </Button>
-                  <Button variant="outline-light">Light</Button>
                 </div>
               </Card.Body>
             </Card>
