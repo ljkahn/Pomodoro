@@ -1,4 +1,26 @@
-.root {
-  color: black;
-  background-color: aqua;
+
+
+.card {
+  color: rgb(255, 255, 255);
+  background-color: rgb(192, 95, 126);
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: large;
+  
 }
+
+.head {
+  margin-top: 5rem;
+  text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.cardContainer {
+  text-align: center;
+
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+/* .btn {
+  font-family: Arial, Helvetica, sans-serif
+} */
