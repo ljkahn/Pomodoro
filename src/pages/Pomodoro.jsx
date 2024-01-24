@@ -3,6 +3,7 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -94,39 +95,50 @@ function Pomodoro() {
       <Container className="card-container d-flex align-items-center justify-content-center min-vh-100">
         <Row>
           <Col md={6}>
-            <Card style={{ width: "30rem", height: "15rem" }} className="card">
+            <Card style={{ width: "30rem", height: "20rem" }} className="card">
               <Card.Body>
-                <Card.Title>Work Session</Card.Title>
+                <Card.Title>Business</Card.Title>
                 <Card.Text>{formatTime(workTime)}</Card.Text>
                 <Button
                   variant="contained"
                   onClick={toggleWorkTimer}
+                  startIcon={<PlayArrowIcon />}
                   style={{
                     backgroundColor: "rgb(173, 158, 163)",
+                    margin: "1rem",
                   }}
                 >
                   {isWorkActive ? "Pause Timer" : "Start Timer"}
                 </Button>
                 <Button
-                  variant="dark"
+                  variant="contained"
                   onClick={resetWorkTimer}
                   disabled={isWorkActive}
-                  style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                  style={{
+                    backgroundColor: "rgb(173, 158, 163)",
+                    margin: "1rem",
+                  }}
                 >
                   Reset Timer
                 </Button>
                 <div>
                   <Button
-                    variant="dark"
+                    variant="contained"
                     onClick={() => adjustWorkTime(60)}
-                    style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                    style={{
+                      backgroundColor: "rgb(173, 158, 163)",
+                      margin: "1rem",
+                    }}
                   >
                     ⬆️ Increase Time
                   </Button>
                   <Button
-                    variant="dark"
+                    variant="contained"
                     onClick={() => adjustWorkTime(-60)}
-                    style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                    style={{
+                      backgroundColor: "rgb(173, 158, 163)",
+                      margin: "1rem",
+                    }}
                   >
                     ⬇️ Decrease Time
                   </Button>
@@ -135,37 +147,50 @@ function Pomodoro() {
             </Card>
           </Col>
           <Col md={6}>
-            <Card style={{ width: "30rem", height: "15rem" }} className="card">
+            <Card style={{ width: "30rem", height: "20rem" }} className="card">
               <Card.Body>
-                <Card.Title>Break Session</Card.Title>
+                <Card.Title>Break</Card.Title>
                 <Card.Text>{formatTime(breakTime)}</Card.Text>
                 <Button
-                  variant="dark"
+                  variant="contained"
                   onClick={toggleBreakTimer}
-                  style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                  startIcon={<PlayArrowIcon />}
+                  style={{
+                    backgroundColor: "rgb(173, 158, 163)",
+                    margin: "1rem",
+                  }}
                 >
                   {isBreakActive ? "Pause Timer" : "Start Timer"}
                 </Button>
                 <Button
-                  variant="dark"
+                  variant="contained"
                   onClick={resetBreakTimer}
                   disabled={isBreakActive}
-                  style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                  style={{
+                    backgroundColor: "rgb(173, 158, 163)",
+                    margin: "1rem",
+                  }}
                 >
                   Reset Timer
                 </Button>
                 <div>
                   <Button
-                    variant="dark"
+                    variant="contained"
                     onClick={() => adjustBreakTime(60)}
-                    style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                    style={{
+                      backgroundColor: "rgb(173, 158, 163)",
+                      margin: "1rem",
+                    }}
                   >
                     ⬆️ Increase Time
                   </Button>
                   <Button
-                    variant="dark"
+                    variant="contained"
                     onClick={() => adjustBreakTime(-60)}
-                    style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                    style={{
+                      backgroundColor: "rgb(173, 158, 163)",
+                      margin: "1rem",
+                    }}
                   >
                     ⬇️ Decrease Time
                   </Button>
