@@ -3,11 +3,18 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
+
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+
 function Pomodoro() {
-  const [time, setTime] = useState(25 * 60);
-  const [isActive, setIsActive] = useState(false);
-  const [isBreak, setIsBreak] = useState(false);
+  // Work session state
+  const [workTime, setWorkTime] = useState(25 * 60);
+  const [isWorkActive, setIsWorkActive] = useState(false);
+
+  // Break session state
+  const [breakTime, setBreakTime] = useState(5 * 60);
+  const [isBreakActive, setIsBreakActive] = useState(false);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -17,110 +24,150 @@ function Pomodoro() {
     ).padStart(2, "0")}`;
   };
 
-  //normal session clock
-  const toggleTimer = () => {
-    setIsActive((prevIsActive) => !prevIsActive);
-  };
-  // const startTimer = () => {
-  //   setIsActive(true);
-  // };
-
-  // const stopTimer = () => {
-  //   setIsActive(false);
-  // };
-
-  const resetTimer = () => {
-    setIsActive(false);
-    setIsBreak(false);
-    setTime(25 * 60);
+  const toggleWorkTimer = () => {
+    setIsWorkActive((prevIsActive) => !prevIsActive);
   };
 
-  const increaseTime = () => {
-    setTime((prevTime) => prevTime + 1 * 60);
+  const toggleBreakTimer = () => {
+    setIsBreakActive((prevIsActive) => !prevIsActive);
   };
 
-  const decreaseTime = () => {
-    setTime((prevTime) => prevTime - 1 * 60, 0);
+  const resetWorkTimer = () => {
+    setIsWorkActive(false);
+    setWorkTime(25 * 60);
   };
 
-  //break clock
-  const increaseBreak = () => {
-    setBreakTime((prevBreakTime) => prevBreakTime + 1 * 60);
+  const resetBreakTimer = () => {
+    setIsBreakActive(false);
+    setBreakTime(5 * 60);
   };
 
-  const decreaseBreak = () => {
-    setBreakTime((prevBreakTime) => prevBreakTime - 1 * 60, 0);
+  const adjustWorkTime = (amount) => {
+    setWorkTime((prevTime) => (prevTime + amount >= 0 ? prevTime + amount : 0));
+  };
+
+  const adjustBreakTime = (amount) => {
+    setBreakTime((prevBreakTime) =>
+      prevBreakTime + amount >= 0 ? prevBreakTime + amount : 0
+    );
   };
 
   useEffect(() => {
-    let intervalId;
+    let workIntervalId;
+    let breakIntervalId;
 
-    if (isActive) {
-      intervalId = setInterval(() => {
-        setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+    if (isWorkActive) {
+      workIntervalId = setInterval(() => {
+        setWorkTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
       }, 1000);
     }
 
-    if (time === 0) {
-      setIsActive(false);
-      if (!isBreak) {
-        // If it's the end of the work session, start a 5-minute break
-        setTime(5 * 60);
-      } else {
-        // If it's the end of the break, start a new 25-minute work session
-        setTime(25 * 60);
-      }
-      setIsBreak(!isBreak);
+    if (isBreakActive) {
+      breakIntervalId = setInterval(() => {
+        setBreakTime((prevBreakTime) =>
+          prevBreakTime > 0 ? prevBreakTime - 1 : 0
+        );
+      }, 1000);
+    }
+
+    if (workTime === 0 && isWorkActive) {
+      setIsWorkActive(false);
+      setBreakTime(5 * 60);
+      setIsBreakActive(true);
+    }
+
+    if (breakTime === 0 && isBreakActive) {
+      setIsBreakActive(false);
+      setWorkTime(25 * 60);
+      setIsWorkActive(true);
     }
 
     return () => {
-      clearInterval(intervalId);
+      clearInterval(workIntervalId);
+      clearInterval(breakIntervalId);
     };
-  }, [isActive, isBreak, time]);
+  }, [isWorkActive, isBreakActive, workTime, breakTime]);
 
   return (
     <>
       <h1 className="head">Pomodoro Clock</h1>
-      <Container className="cardContainer d-flex align-items-center justify-content-center min-vh-100">
+      <Container className="card-container d-flex align-items-center justify-content-center min-vh-100">
         <Row>
           <Col md={6}>
-            <Card style={{ width: "30rem", height: "25rem" }} className="card">
-              {/* <Card.Img variant="top" src="" /> */}
+            <Card style={{ width: "30rem", height: "15rem" }} className="card">
               <Card.Body>
-                <Card.Title>Start Session</Card.Title>
-                <Card.Text>{formatTime(time)}</Card.Text>
-
-                <Button variant="dark" onClick={toggleTimer}>
-                  {isActive ? "Pause Timer" : "Start Timer"}
+                <Card.Title>Work Session</Card.Title>
+                <Card.Text>{formatTime(workTime)}</Card.Text>
+                <Button
+                  variant="contained"
+                  onClick={toggleWorkTimer}
+                  style={{
+                    backgroundColor: "rgb(173, 158, 163)",
+                  }}
+                >
+                  {isWorkActive ? "Pause Timer" : "Start Timer"}
                 </Button>
-
-                <Button variant="dark" onClick={resetTimer} disabled={isActive}>
+                <Button
+                  variant="dark"
+                  onClick={resetWorkTimer}
+                  disabled={isWorkActive}
+                  style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                >
                   Reset Timer
                 </Button>
-
                 <div>
-                  <Button variant="dark" onClick={increaseTime}>
-                    Increase Time
+                  <Button
+                    variant="dark"
+                    onClick={() => adjustWorkTime(60)}
+                    style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                  >
+                    ⬆️ Increase Time
                   </Button>
-                  <Button variant="dark" onClick={decreaseTime}>
-                    Decrease Time
+                  <Button
+                    variant="dark"
+                    onClick={() => adjustWorkTime(-60)}
+                    style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                  >
+                    ⬇️ Decrease Time
                   </Button>
                 </div>
-
-                {/* <div>
-                  <button onClick={() => adjustTime(300)}>⬆️</button>
-                  <button onClick={() => adjustTime(-300)}>⬇️</button>
-                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6}>
+            <Card style={{ width: "30rem", height: "15rem" }} className="card">
+              <Card.Body>
+                <Card.Title>Break Session</Card.Title>
+                <Card.Text>{formatTime(breakTime)}</Card.Text>
+                <Button
+                  variant="dark"
+                  onClick={toggleBreakTimer}
+                  style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                >
+                  {isBreakActive ? "Pause Timer" : "Start Timer"}
+                </Button>
+                <Button
+                  variant="dark"
+                  onClick={resetBreakTimer}
+                  disabled={isBreakActive}
+                  style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                >
+                  Reset Timer
+                </Button>
                 <div>
-                  <button onClick={() => adjustBreakTime(300)}>⬆️</button>
-                  <button onClick={() => adjustBreakTime(-300)}>⬇️</button>
-                </div> */}
-                <div>
-                  <Button variant="dark" onClick={increaseBreak}>
-                    Increase Break Time
+                  <Button
+                    variant="dark"
+                    onClick={() => adjustBreakTime(60)}
+                    style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                  >
+                    ⬆️ Increase Time
                   </Button>
-                  <Button variant="dark" onClick={decreaseBreak}>
-                    Decrease Break Time
+                  <Button
+                    variant="dark"
+                    onClick={() => adjustBreakTime(-60)}
+                    style={{ backgroundColor: "rgb(173, 158, 163)" }}
+                  >
+                    ⬇️ Decrease Time
                   </Button>
                 </div>
               </Card.Body>
